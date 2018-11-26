@@ -1,3 +1,29 @@
-<p>
-  lobby works!
-</p>
+<div class="lobby flex-container flex-column">
+  <div class="upperLobby flex-col-1">
+    <input class="playerNickInput text-center" placeholder="NickName..." [(ngModel)]="playerNickName">
+  </div>
+  <div class="bottomLobby flex-col-9 flex-container flex-row">
+    <div class="listOfRooms flex-col-9">
+      <div 
+        class="room text-center"
+        *ngFor="let room of rooms"
+        (click)="onRoom(room)"
+      >
+      ID: {{ room.Id }} Player: {{ room.HostNick }} 
+      <app-icon-padlock *ngIf="room.IsPassword"></app-icon-padlock>
+      </div>
+    </div>
+    <div class="buttonsAndInfo flex-col-3 flex-container flex-column">
+      <input type="password" placeholder="Password..." [(ngModel)]="password" class="paswordInput text-center flex-col-1">
+      <button class="darkBtn flex-col-2" (click)="onHost()">Host</button>
+      <button class="darkBtn flex-col-3" (click)="onRefresh()">Refresh</button>
+      <button class="darkBtn flex-col-3" routerLink="/">Menu</button>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<app-waiting-for-player-modal
+  [hostNick]="playerNickName"
+  [hostedRoomId]="hostedRoomId"
+  [hostedRoomPassword]="password"
+></app-waiting-for-player-modal>
