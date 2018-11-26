@@ -88,7 +88,7 @@ export class LobbyService {
         transport: signalR.HttpTransportType.WebSockets
         | signalR.HttpTransportType.LongPolling
       })
-      .configureLogging(signalR.LogLevel.Trace)
+      //.configureLogging(signalR.LogLevel.Trace)
       .build();
   }
 

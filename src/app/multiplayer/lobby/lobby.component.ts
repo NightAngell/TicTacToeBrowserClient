@@ -67,7 +67,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
   }
 
   private _startTheGame(gameId: number):void{
-    this.router.navigate(["/mutliplayerGame", gameId])
+    this.router.navigate(["/multiplayerGame", gameId])
   }
 
   private _requestForListOfRooms(): void{
@@ -81,11 +81,6 @@ export class LobbyComponent implements OnInit, OnDestroy {
     room.HostNick = this.playerNickName;
     room.Password = this.password;
     return room;
-  }
-
-  @HostListener('window:beforeunload') closeConnectionWithHub(){
-    //this.lobbyService.StopConnectionWithRoomHub();
-    this.lobbyService.AbortRoom(this.hostedRoomId);
   }
 
   ngOnDestroy(){
