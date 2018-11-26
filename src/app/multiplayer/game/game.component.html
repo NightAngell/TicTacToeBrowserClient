@@ -1,3 +1,15 @@
-<p>
-  game works!
-</p>
+<!-- Game field -->
+<div class="gameField flex-container flex-column text-center">
+  <div 
+    class="flex-container flex-row flex-col"
+    *ngFor="let row of gameFields; let i = index"
+  >
+    <div 
+      class="fieldCell flex-col flex-container-center" 
+      *ngFor="let field of row; let j = index"
+      (click)="makeMoveIfPossible(i, j)"
+    >
+      {{ field }}
+    </div>
+  </div>
+</div>
