@@ -29,7 +29,7 @@ export class WaitingForPlayerModalComponent implements OnInit {
   onAbort(){
     this.shouldShowThisModal = false;
     this.waitingModalService.Show();
-    this.lobbyService.AbortRoom(this.hostedRoomId);
+    this.lobbyService.AbortRoom();
   }
 
 }

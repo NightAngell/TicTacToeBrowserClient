@@ -55,9 +55,9 @@ export class LobbyService {
     });
   }
 
-  AbortRoom(roomId: number){
+  AbortRoom(){
     this._doOnConnectedHubConnection(()=>{
-      this._connection.invoke("AbortRoom", roomId);
+      this._connection.invoke("AbortRoom");
     });
   }
 
