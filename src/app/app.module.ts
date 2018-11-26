@@ -4,11 +4,13 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { IconPadlockComponent } from './shared/icons/icon-padlock/icon-padlock.component';
+import { MenuComponent } from './menu/menu.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    IconPadlockComponent
+    IconPadlockComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,
