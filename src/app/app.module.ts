@@ -8,6 +8,8 @@ import { MenuComponent } from './menu/menu.component';
 import { TicTacToeSingleplayerComponent } from './tic-tac-toe-singleplayer/tic-tac-toe-singleplayer.component';
 import { LobbyComponent } from './multiplayer/lobby/lobby.component';
 import { GameComponent } from './multiplayer/game/game.component';
+import { WaitingForPlayerModalComponent } from './multiplayer/lobby/waiting-for-player-modal/waiting-for-player-modal.component';
+import { WaitingModalComponent } from './shared/components/waiting-modal/waiting-modal.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { GameComponent } from './multiplayer/game/game.component';
     MenuComponent,
     TicTacToeSingleplayerComponent,
     LobbyComponent,
-    GameComponent
+    GameComponent,
+    WaitingForPlayerModalComponent,
+    WaitingModalComponent
   ],
   imports: [
     BrowserModule,
