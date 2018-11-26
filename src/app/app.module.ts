@@ -6,13 +6,17 @@ import { AppComponent } from './app.component';
 import { IconPadlockComponent } from './shared/icons/icon-padlock/icon-padlock.component';
 import { MenuComponent } from './menu/menu.component';
 import { TicTacToeSingleplayerComponent } from './tic-tac-toe-singleplayer/tic-tac-toe-singleplayer.component';
+import { LobbyComponent } from './multiplayer/lobby/lobby.component';
+import { GameComponent } from './multiplayer/game/game.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     IconPadlockComponent,
     MenuComponent,
-    TicTacToeSingleplayerComponent
+    TicTacToeSingleplayerComponent,
+    LobbyComponent,
+    GameComponent
   ],
   imports: [
     BrowserModule,
