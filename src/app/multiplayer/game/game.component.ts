@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GameService } from './game.service';
 import { PositionOnTheField } from './models/position-on-the-field';
 import { WaitingModalService } from 'src/app/shared/components/waiting-modal/waiting-modal.service';
@@ -8,7 +8,7 @@ import { WaitingModalService } from 'src/app/shared/components/waiting-modal/wai
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.css']
 })
-export class GameComponent implements OnInit {
+export class GameComponent implements OnInit, OnDestroy {
 
   currentPlayerSymbol: string = "x";
   opponentSymbol: string = "o";
@@ -34,7 +34,7 @@ export class GameComponent implements OnInit {
       this.waitingModal.Hide();
     });
 
-    this.gameService.opponentConnectionLost.subscribe(()=>{
+    this.gameService.opponentDisconnected.subscribe(()=>{
       console.log("connection lost");
     });
 
@@ -44,5 +44,10 @@ export class GameComponent implements OnInit {
   makeMoveIfPossible(i: number, j: number){
     this.gameFields[i][j] = this.currentPlayerSymbol;
     this.gameService.MakeMoveIfPossible(i, j);
+  }
+
+  ngOnDestroy(): void {
+    this.waitingModal.Hide();
+    this.gameService.StopConnectionWithHub();
   }
 }

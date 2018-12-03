@@ -41,7 +41,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
   }
 
   onRoom(room: Room){
-    this.lobbyService.JoinToRoom(room, this.password);
+    this.lobbyService.JoinToRoom(room, this.password, this.playerNickName);
   }
 
   private _handleLobbyServiceEvents(){

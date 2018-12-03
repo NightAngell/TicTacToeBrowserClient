@@ -46,13 +46,15 @@ export class LobbyService {
 
   HostRoom(room: Room): void {
     this._doOnConnectedHubConnection(()=>{
+      this._gameService.gamePassword = room.Password;
       this._connection.invoke("CreateHostRoom", room).then();
     });
   }
 
-  JoinToRoom(room: Room, password: string): void {
+  JoinToRoom(room: Room, password: string, nick :string): void {
     this._doOnConnectedHubConnection(()=>{
-      this._connection.invoke("AddGuestToRoom", room.Id, password).then();
+      this._gameService.gamePassword = password;
+      this._connection.invoke("AddGuestToRoom", room.Id, password, nick).then();
     });
   }
 
@@ -99,8 +101,9 @@ export class LobbyService {
       this.roomCreated.next(roomId);
     });
 
-    this._connection.on("GuestJoinToRoom", (roomId: number)=>{
+    this._connection.on("GuestJoinToRoom", (roomId: number, playerId: string)=>{
       this._gameService.gameID = roomId;
+      this._gameService.playerId = playerId;
       this.guestJoinToRoom.next(roomId);
     });
 

@@ -10,9 +10,10 @@ export class GameService {
 
   opponentMadeMove: Subject<PositionOnTheField> = new Subject();
   opponentConnected: Subject<{}> = new Subject();
-  opponentConnectionLost: Subject<{}> = new Subject();
+  opponentDisconnected: Subject<{}> = new Subject();
   gameID: number;
-  pingInterval: NodeJS.Timer;
+  gamePassword: string;
+  playerId: string;
   private _connection: signalR.HubConnection;
   constructor() {
     this._createConnectionHub();
@@ -20,14 +21,20 @@ export class GameService {
   }
 
   public MakeMoveIfPossible(i: number, j: number){
-    this._connection.invoke("MakeMove", i, j);
+    this._connection.invoke(
+      "MakeMove",
+      i,
+      j,
+      this.playerId,
+      this.gamePassword
+    );
   }
 
   private _createConnectionHub(){
     this._connection = new signalR.HubConnectionBuilder()
     .withUrl("http://localhost:62773/gameHub", {
       transport: signalR.HttpTransportType.WebSockets
-      | signalR.HttpTransportType.LongPolling
+      //| signalR.HttpTransportType.LongPolling
     })
     //.configureLogging(signalR.LogLevel.Trace)
     .build();
@@ -35,10 +42,12 @@ export class GameService {
 
   StartGame(){
     this._connection.start().then(()=>{
-      this._connection.invoke("JoinToGame", this.gameID).then(()=>{
-        this.pingInterval = setInterval(()=>{
-          this._connection.invoke("Ping", this.gameID)
-        }, 1000);
+      this._connection.invoke(
+          "JoinToGame",
+          this.gameID,
+          this.playerId,
+          this.gamePassword
+        ).then(()=>{
       });
     });
   }
@@ -48,9 +57,15 @@ export class GameService {
   }
 
   private _attachEventsToConnection(){
-    this._connection.on("OpponentConnected", ()=>{
-      clearInterval(this.pingInterval);
-      this._connection.invoke("Ping", this.gameID)
+    this._connection.on("OpponentJoinedToGame", ()=>{
+      this._connection.invoke(
+        "NotifyOpponentImAlreadyInRoom",
+        this.playerId,
+        this.gamePassword
+      )
+    });
+
+    this._connection.on("AllPlayersJoinedToRoom", ()=>{
       this.opponentConnected.next();
     });
 
@@ -59,6 +74,10 @@ export class GameService {
       pos.i = iPos;
       pos.j = jPos
       this.opponentMadeMove.next(pos);
+    });
+
+    this._connection.on("OpponentDisconnected", ()=>{
+      this.opponentDisconnected.next();
     });
   }
 }
