@@ -1,0 +1,44 @@
+<!-- Winner modal -->
+<div
+  *ngIf="isWinner"
+  class="winnerModal"
+>
+  <div class="winnerMessage text-center flex-container-center flex-column">
+      <div class="flex-col-7 flex-container-center">
+        <div *ngIf="currentPlayer === this.player">
+            You win!
+        </div>
+        <div *ngIf="currentPlayer === this.bot">
+            You loose!
+        </div>
+      </div>
+      <div class="okButton flex-col-5 flex-container-center" routerLink="/">Ok</div>
+  </div>
+</div>
+<!-- Draw modal -->
+<div
+  *ngIf="isDraw"
+  class="drawModal"
+>
+<div class="drawMessage text-center flex-container-center flex-column">
+    <div class="flex-col-7 flex-container-center">
+        Draw!
+    </div>
+    <div class="okButton flex-col-5 flex-container-center" routerLink="/">Ok</div>
+</div>
+</div>
+<!-- Game field -->
+<div class="gameField flex-container flex-column text-center">
+  <div
+    class="flex-container flex-row flex-col"
+    *ngFor="let row of gameFields; let i = index"
+  >
+    <div 
+      class="fieldCell flex-col flex-container-center" 
+      *ngFor="let field of row; let j = index"
+      (click)="makeMoveIfPossible(i, j)"
+    >
+      {{ field }}
+    </div>
+  </div>
+</div>

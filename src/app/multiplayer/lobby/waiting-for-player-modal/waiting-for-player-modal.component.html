@@ -1,0 +1,8 @@
+<div class="modal" *ngIf="shouldShowThisModal">
+  <div class="modalContent">
+    ID: {{ hostedRoomId }} <br>
+    HostNick: {{ hostNick }} <br>
+    Password: {{ hostedRoomPassword }} <br>
+    <button class="abortButton" (click)="onAbort()">Abort room</button>
+  </div>
+</div>

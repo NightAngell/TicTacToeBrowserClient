@@ -1,1 +1,107 @@
-/* You can add global styles to this file, and also import other style files */
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body, .main-container{
+    width: 100%;
+    height: 100%;
+    background: rgb(143, 142, 142);
+}
+
+ul{
+    list-style-type: none;
+}
+
+.flex-container{
+    display: flex;
+}
+
+.flex-row{
+    flex-direction: row;
+}
+
+.flex-col, .flex-col-1{
+    flex-basis: 0;
+    flex-grow: 1;
+}
+
+.flex-col-2{
+    flex-basis: 0;
+    flex-grow: 2;
+}
+
+.flex-col-3{
+    flex-basis: 0;
+    flex-grow: 3;
+}
+
+.flex-col-7{
+    flex-basis: 0;
+    flex-grow: 7;
+}
+
+.flex-col-9{
+    flex-basis: 0;
+    flex-grow: 9;
+}
+
+.flex-col-11{
+    flex-basis: 0;
+    flex-grow: 11;
+}
+
+.flex-col-10{
+    flex-basis: 0;
+    flex-grow: 10;
+}
+
+.flex-col-7{
+    flex-basis: 0;
+    flex-grow: 7;
+}
+
+.flex-col-5{
+    flex-basis: 0;
+    flex-grow: 5;
+}
+
+.flex-col-4{
+    flex-basis: 0;
+    flex-grow: 4;
+}
+.flex-col-8{
+    flex-basis: 0;
+    flex-grow: 8;
+}
+
+.text-center{
+    text-align: center;
+}
+
+.flex-column{
+    flex-direction: column;
+}
+
+.flex-align-items-center{
+    align-items: center;
+}
+
+.flex-justify-center{
+    justify-content: center;
+}
+
+.flex-container-center{
+   display:flex;
+   justify-content:center;
+   align-items:center;
+}
+
+.modal{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.527);
+}
