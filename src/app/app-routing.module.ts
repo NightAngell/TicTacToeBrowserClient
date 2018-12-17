@@ -9,7 +9,7 @@ const routes: Routes = [
   { path: "", component: MenuComponent },
   { path: "ticTacToe", component: TicTacToeSingleplayerComponent },
   { path: "lobby", component: LobbyComponent},
-  { path: "multiplayerGame/:id", component: GameComponent}
+  { path: "multiplayerGame", component: GameComponent}
 ];
 
 @NgModule({

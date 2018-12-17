@@ -5,6 +5,7 @@ import { LobbyService } from './lobby.service';
 import { Router } from '@angular/router';
 import { WaitingModalService } from 'src/app/shared/components/waiting-modal/waiting-modal.service';
 import { WaitingForPlayerModalService } from './waiting-for-player-modal/waiting-for-player-modal.service';
+import { InfoModalService } from 'src/app/shared/components/info-modal/info-modal.service';
 
 @Component({
   selector: 'app-lobby',
@@ -17,13 +18,14 @@ export class LobbyComponent implements OnInit, OnDestroy {
   password: string = "";
   hostedRoomId: number;
   rooms: Room[] = [];
-  subscription: Subscription = new Subscription();
-  //TODO unsubscribe
+  subscriptions: Subscription = new Subscription();
+
   constructor(
     private lobbyService: LobbyService,
     private router: Router,
     private waitingModalService: WaitingModalService,
-    private waitingForPlayerModalService: WaitingForPlayerModalService
+    private waitingForPlayerModalService: WaitingForPlayerModalService,
+    private infoModalService: InfoModalService
   ) { }
 
   ngOnInit() {
@@ -45,29 +47,36 @@ export class LobbyComponent implements OnInit, OnDestroy {
   }
 
   private _handleLobbyServiceEvents(){
-    this.lobbyService.guestJoinToRoom.subscribe((gameId: number)=>{
-      this._startTheGame(gameId);
-    });
+    let subscription: Subscription;
 
-    this.lobbyService.roomCreated.subscribe((roomId: number)=>{
+    subscription = this.lobbyService.guestJoinToRoom.subscribe(()=>{
+      this._startTheGame();
+    });
+    this.subscriptions.add(subscription);
+
+    subscription = this.lobbyService.roomCreated.subscribe((roomId: number)=>{
       this.hostedRoomId = roomId;
       this.waitingModalService.Hide();
       this.waitingForPlayerModalService.Show();
     });
+    this.subscriptions.add(subscription);
 
-    this.lobbyService.roomAborted.subscribe(()=>{
+    subscription = this.lobbyService.roomAborted.subscribe(()=>{
       this._requestForListOfRooms();
       this.waitingModalService.Hide();
     });
+    this.subscriptions.add(subscription);
 
-    this.lobbyService.playerCannotJoinToRoom.subscribe((reason: string)=>{
-      console.log(reason);
-      //Wyswietliić w jakims modalu, który kończy sie ok i zamyka, napisac reusable dark info component
+    subscription = this.lobbyService.playerCannotJoinToRoom.subscribe((reason: string)=>{
+      this.infoModalService.Title = "Cannot join to room!";
+      this.infoModalService.Content = reason;
+      this.infoModalService.Show();
     });
+    this.subscriptions.add(subscription);
   }
 
-  private _startTheGame(gameId: number):void{
-    this.router.navigate(["/multiplayerGame", gameId])
+  private _startTheGame():void{
+    this.router.navigate(["/multiplayerGame"])
   }
 
   private _requestForListOfRooms(): void{
@@ -85,6 +94,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(){
     this.lobbyService.StopConnectionWithRoomHub();
+    this.subscriptions.unsubscribe();
   }
 }
 

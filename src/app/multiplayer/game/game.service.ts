@@ -11,7 +11,7 @@ export class GameService {
   opponentMadeMove: Subject<PositionOnTheField> = new Subject();
   opponentConnected: Subject<{}> = new Subject();
   opponentDisconnected: Subject<{}> = new Subject();
-  gameID: number;
+  roomId: number;
   gamePassword: string;
   playerId: string;
   private _connection: signalR.HubConnection;
@@ -44,7 +44,7 @@ export class GameService {
     this._connection.start().then(()=>{
       this._connection.invoke(
           "JoinToGame",
-          this.gameID,
+          this.roomId,
           this.playerId,
           this.gamePassword
         ).then(()=>{

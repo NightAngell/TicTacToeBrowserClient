@@ -1,0 +1,9 @@
+<div class="modal" *ngIf="shouldShowInfoModal">
+  <div class="modalContent">
+    <div class="modalTitle">{{ title }}</div>
+    <div class="modalBody">
+      <div class="modalInfo">{{ content }}</div>
+      <div class="modalOkButton" (click)="onOk()" class="dark-btn text-center">OK</div>
+    </div>
+  </div>
+</div>

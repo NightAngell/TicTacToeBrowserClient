@@ -105,3 +105,18 @@ ul{
     height: 100%;
     background: rgba(0, 0, 0, 0.527);
 }
+
+.dark-btn{
+    padding: 10px;
+    background: rgb(97, 94, 94);
+    font-size: 35px;
+    color: rgb(170, 169, 169);
+    border: 5px solid rgb(56, 56, 56);
+    margin: 3px;
+}
+
+.dark-btn:hover{
+    border: 5px solid rgb(170, 169, 169);
+    color: rgb(56, 55, 55);
+    background: rgb(219, 218, 218);
+}

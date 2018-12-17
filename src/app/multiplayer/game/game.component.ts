@@ -42,7 +42,7 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   makeMoveIfPossible(i: number, j: number){
-    this.gameFields[i][j] = this.currentPlayerSymbol;
+    //this.gameFields[i][j] = this.currentPlayerSymbol;
     this.gameService.MakeMoveIfPossible(i, j);
   }
 

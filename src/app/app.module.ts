@@ -12,6 +12,7 @@ import { GameComponent } from './multiplayer/game/game.component';
 import { WaitingForPlayerModalComponent } from './multiplayer/lobby/waiting-for-player-modal/waiting-for-player-modal.component';
 import { WaitingModalComponent } from './shared/components/waiting-modal/waiting-modal.component';
 import { HttpClientModule } from '@angular/common/http';
+import { InfoModalComponent } from './shared/components/info-modal/info-modal.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { HttpClientModule } from '@angular/common/http';
     LobbyComponent,
     GameComponent,
     WaitingForPlayerModalComponent,
-    WaitingModalComponent
+    WaitingModalComponent,
+    InfoModalComponent
   ],
   imports: [
     BrowserModule,

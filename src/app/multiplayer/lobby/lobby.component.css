@@ -76,25 +76,20 @@ button:focus, input:focus{
     outline: none;
 }
 
-/* Scrollbar /
-/ width /
 ::-webkit-scrollbar {
     width: 20px;
 }
 
-/ Track /
 ::-webkit-scrollbar-track {
     background: rgb(102, 101, 101);
     border-radius: 10px;
 }
  
-/ Handle /
 ::-webkit-scrollbar-thumb {
     background: rgb(68, 61, 61);
     border-radius: 10px;
 }
 
-/ Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     border: 2px solid rgb(155, 153, 153); 
 }

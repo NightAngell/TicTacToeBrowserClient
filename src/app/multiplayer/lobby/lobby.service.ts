@@ -97,12 +97,12 @@ export class LobbyService {
 
   private _attachEventsToConnectionHub(){
     this._connection.on("HostRoomCreated", (roomId: number)=>{
-      this._gameService.gameID = roomId;
+      this._gameService.roomId = roomId;
       this.roomCreated.next(roomId);
     });
 
     this._connection.on("GuestJoinToRoom", (roomId: number, playerId: string)=>{
-      this._gameService.gameID = roomId;
+      this._gameService.roomId = roomId;
       this._gameService.playerId = playerId;
       this.guestJoinToRoom.next(roomId);
     });

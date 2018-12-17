@@ -1,6 +1,10 @@
 <div class="lobby flex-container flex-column">
   <div class="upperLobby flex-col-1">
-    <input class="playerNickInput text-center" placeholder="NickName..." [(ngModel)]="playerNickName">
+    <input 
+      class="playerNickInput text-center" 
+      placeholder="NickName..." 
+      [(ngModel)]="playerNickName"
+    >
   </div>
   <div class="bottomLobby flex-col-9 flex-container flex-row">
     <div class="listOfRooms flex-col-9">
@@ -14,8 +18,16 @@
       </div>
     </div>
     <div class="buttonsAndInfo flex-col-3 flex-container flex-column">
-      <input type="password" placeholder="Password..." [(ngModel)]="password" class="paswordInput text-center flex-col-1">
-      <button class="darkBtn flex-col-2" (click)="onHost()">Host</button>
+      <input 
+        type="password" 
+        placeholder="Password..." 
+        [(ngModel)]="password" 
+        class="paswordInput text-center flex-col-1"
+      >
+      <button 
+        class="darkBtn flex-col-2" 
+        (click)="onHost()" 
+      >Host</button>
       <button class="darkBtn flex-col-3" (click)="onRefresh()">Refresh</button>
       <button class="darkBtn flex-col-3" routerLink="/">Menu</button>
     </div>
