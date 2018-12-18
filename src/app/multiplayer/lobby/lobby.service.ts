@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 import { Room } from './models/room';
 import { HubConnectionState } from 'src/app/shared/enums/hub-connection-state.enum';
 import { GameService } from '../game/game.service';
+import { AuthenticationService } from 'src/app/auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,10 @@ export class LobbyService {
   playerCannotJoinToRoom: Subject<string> = new Subject();
 
   private _connection: signalR.HubConnection;
-  constructor(private _http: HttpClient, private _gameService: GameService) {
+  constructor(
+    private _http: HttpClient, 
+    private _gameService: GameService, 
+    private _auth: AuthenticationService) {
     this._createConnectionHub();
     this._attachEventsToConnectionHub();
   }
@@ -90,8 +94,8 @@ export class LobbyService {
   private _createConnectionHub(){
     this._connection = new signalR.HubConnectionBuilder()
       .withUrl("http://localhost:62773/roomHub", {
-        transport: signalR.HttpTransportType.WebSockets
-        //| signalR.HttpTransportType.LongPolling
+        transport: signalR.HttpTransportType.WebSockets,
+        accessTokenFactory: ()=> this._auth.getTokenFromLocalStorage().token
       })
       //.configureLogging(signalR.LogLevel.Trace)
       .build();

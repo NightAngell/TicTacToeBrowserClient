@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import * as signalR from '@aspnet/signalr';
 import { PositionOnTheField } from './models/position-on-the-field';
+import { AuthenticationService } from 'src/app/auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class GameService {
   playerId: string;
   isHost: boolean;
   private _connection: signalR.HubConnection;
-  constructor() {
+  constructor(private _auth: AuthenticationService) {
     this._createConnectionHub();
     this._attachEventsToConnection();
   }
@@ -38,8 +39,8 @@ export class GameService {
   private _createConnectionHub(){
     this._connection = new signalR.HubConnectionBuilder()
     .withUrl("http://localhost:62773/gameHub", {
-      transport: signalR.HttpTransportType.WebSockets
-      //| signalR.HttpTransportType.LongPolling
+      transport: signalR.HttpTransportType.WebSockets,
+      accessTokenFactory: ()=> this._auth.getTokenFromLocalStorage().token
     })
     //.configureLogging(signalR.LogLevel.Trace)
     .build();
