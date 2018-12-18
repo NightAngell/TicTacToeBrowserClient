@@ -8,9 +8,13 @@ import { PositionOnTheField } from './models/position-on-the-field';
 })
 export class GameService {
 
-  opponentMadeMove: Subject<PositionOnTheField> = new Subject();
+  playerMadeMove: Subject<PositionOnTheField> = new Subject();
   opponentConnected: Subject<{}> = new Subject();
   opponentDisconnected: Subject<{}> = new Subject();
+  playerWin: Subject<{}> = new Subject();
+  playerLose: Subject<{}> = new Subject();
+  playerDraw: Subject<{}> = new Subject();
+
   roomId: number;
   gamePassword: string;
   playerId: string;
@@ -69,11 +73,23 @@ export class GameService {
       this.opponentConnected.next();
     });
 
-    this._connection.on("OpponentMadeMove", (iPos, jPos)=>{
+    this._connection.on("PlayerMadeMove", (iPos, jPos)=>{
       const pos = new PositionOnTheField();
       pos.i = iPos;
       pos.j = jPos
-      this.opponentMadeMove.next(pos);
+      this.playerMadeMove.next(pos);
+    });
+
+    this._connection.on("Win", ()=>{
+      this.playerWin.next();
+    });
+
+    this._connection.on("Lose", ()=>{
+      this.playerLose.next();
+    });
+
+    this._connection.on("Draw", ()=>{
+      this.playerDraw.next();
     });
 
     this._connection.on("OpponentDisconnected", ()=>{

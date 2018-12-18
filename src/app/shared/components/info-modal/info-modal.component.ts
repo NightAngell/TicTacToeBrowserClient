@@ -29,6 +29,7 @@ export class InfoModalComponent implements OnInit {
 
   onOk(){
     this.shouldShowInfoModal = false;
+    this._infoModal.okClicked.next();
   }
 
 }
