@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs';
 export class GameComponent implements OnInit, OnDestroy {
 
   currentPlayerSymbol: string = "x";
+  playerSymbol: string = "x";
   opponentSymbol: string = "o";
   isWinnerOrDraw: boolean = false;
   readonly gameFields: string[][] = [
@@ -33,7 +34,8 @@ export class GameComponent implements OnInit, OnDestroy {
     this.waitingModal.Show();
     let subscription: Subscription;
     subscription = this.gameService.playerMadeMove.subscribe((position: PositionOnTheField)=>{
-      this.gameFields[position.i][position.j] = this.opponentSymbol;
+      this.gameFields[position.i][position.j] = this.currentPlayerSymbol;
+      this._nextPlayer();
     });
     this.subscriptions.add(subscription);
 
@@ -84,6 +86,13 @@ export class GameComponent implements OnInit, OnDestroy {
 
   makeMoveIfPossible(i: number, j: number){
     this.gameService.MakeMoveIfPossible(i, j);
+  }
+
+  private _nextPlayer(){
+    if(this.currentPlayerSymbol === this.playerSymbol)
+      this.currentPlayerSymbol = this.opponentSymbol;
+    else
+      this.currentPlayerSymbol = this.playerSymbol;
   }
 
   ngOnDestroy(): void {

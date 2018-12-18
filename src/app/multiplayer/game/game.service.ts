@@ -18,6 +18,7 @@ export class GameService {
   roomId: number;
   gamePassword: string;
   playerId: string;
+  isHost: boolean;
   private _connection: signalR.HubConnection;
   constructor() {
     this._createConnectionHub();

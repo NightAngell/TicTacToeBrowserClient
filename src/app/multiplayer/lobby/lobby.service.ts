@@ -47,6 +47,7 @@ export class LobbyService {
   HostRoom(room: Room): void {
     this._doOnConnectedHubConnection(()=>{
       this._gameService.gamePassword = room.Password;
+      this._gameService.isHost = true;
       this._connection.invoke("CreateHostRoom", room).then();
     });
   }
@@ -54,6 +55,7 @@ export class LobbyService {
   JoinToRoom(room: Room, password: string, nick :string): void {
     this._doOnConnectedHubConnection(()=>{
       this._gameService.gamePassword = password;
+      this._gameService.isHost = false;
       this._connection.invoke("AddGuestToRoom", room.Id, password, nick).then();
     });
   }
