@@ -1,19 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { AbstractModal } from '../AbstractModal';
 
 @Injectable({
   providedIn: 'root'
 })
-export class WaitingModalService {
-
-  modalVisibilityChangeRequest: Subject<boolean> = new Subject();
-  constructor() { }
-
-  Show(){
-    this.modalVisibilityChangeRequest.next(true);
-  }
-
-  Hide(){
-    this.modalVisibilityChangeRequest.next(false);
-  }
-}
+export class WaitingModalService extends AbstractModal {}

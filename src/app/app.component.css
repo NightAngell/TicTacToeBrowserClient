@@ -1,0 +1,16 @@
+.logout{
+    position: fixed;
+    left: 10px;
+    top: 10px;
+    color: rgb(105, 105, 105);
+    font-size: 25px;
+    font-weight: bold;
+    background: rgb(128, 127, 127);
+    border-radius: 50px;
+    padding: 10px;
+}
+
+.logout:hover{
+    background: rgb(48, 48, 48);
+    color: gray;
+}

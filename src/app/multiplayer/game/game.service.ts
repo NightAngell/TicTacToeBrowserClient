@@ -2,20 +2,26 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import * as signalR from '@aspnet/signalr';
 import { PositionOnTheField } from './models/position-on-the-field';
+import { AuthenticationService } from 'src/app/auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameService {
 
-  opponentMadeMove: Subject<PositionOnTheField> = new Subject();
+  playerMadeMove: Subject<PositionOnTheField> = new Subject();
   opponentConnected: Subject<{}> = new Subject();
   opponentDisconnected: Subject<{}> = new Subject();
-  gameID: number;
+  playerWin: Subject<{}> = new Subject();
+  playerLose: Subject<{}> = new Subject();
+  playerDraw: Subject<{}> = new Subject();
+
+  roomId: number;
   gamePassword: string;
   playerId: string;
+  isHost: boolean;
   private _connection: signalR.HubConnection;
-  constructor() {
+  constructor(private _auth: AuthenticationService) {
     this._createConnectionHub();
     this._attachEventsToConnection();
   }
@@ -33,8 +39,8 @@ export class GameService {
   private _createConnectionHub(){
     this._connection = new signalR.HubConnectionBuilder()
     .withUrl("http://localhost:62773/gameHub", {
-      transport: signalR.HttpTransportType.WebSockets
-      //| signalR.HttpTransportType.LongPolling
+      transport: signalR.HttpTransportType.WebSockets,
+      accessTokenFactory: ()=> this._auth.getToken().token
     })
     //.configureLogging(signalR.LogLevel.Trace)
     .build();
@@ -44,7 +50,7 @@ export class GameService {
     this._connection.start().then(()=>{
       this._connection.invoke(
           "JoinToGame",
-          this.gameID,
+          this.roomId,
           this.playerId,
           this.gamePassword
         ).then(()=>{
@@ -69,11 +75,23 @@ export class GameService {
       this.opponentConnected.next();
     });
 
-    this._connection.on("OpponentMadeMove", (iPos, jPos)=>{
+    this._connection.on("PlayerMadeMove", (iPos, jPos)=>{
       const pos = new PositionOnTheField();
       pos.i = iPos;
       pos.j = jPos
-      this.opponentMadeMove.next(pos);
+      this.playerMadeMove.next(pos);
+    });
+
+    this._connection.on("Win", ()=>{
+      this.playerWin.next();
+    });
+
+    this._connection.on("Lose", ()=>{
+      this.playerLose.next();
+    });
+
+    this._connection.on("Draw", ()=>{
+      this.playerDraw.next();
     });
 
     this._connection.on("OpponentDisconnected", ()=>{

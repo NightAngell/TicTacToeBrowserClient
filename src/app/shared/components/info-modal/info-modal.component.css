@@ -1,0 +1,27 @@
+.modalContent{
+    width: 50%;
+    position: fixed;
+    left: 50%;
+    top: 20%;
+    transform: translate(-50%, -50%);
+}
+
+.modalTitle{
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    color: gray;
+    background: rgb(24, 24, 24);
+}
+
+.modalBody{
+    background: rgb(34, 34, 34);
+    padding: 10px;
+}
+
+.modalInfo{
+    text-align: center;
+    color: gray;
+    font-size: 20px;
+    padding-bottom: 10px;
+}

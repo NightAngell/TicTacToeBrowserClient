@@ -1,0 +1,46 @@
+.loginForm{
+    position: fixed;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -50%);
+    width: 30%;
+    background: rgb(66, 66, 66);
+    padding: 10px;
+    min-width: 450px;
+}
+
+.light-dark-input{
+    margin: 10px;
+    padding: 10px;
+    width: 80%;
+}
+
+input.ng-invalid.ng-touched{
+    border: 5px solid rgb(158, 0, 0);
+}
+
+input.ng-valid.ng-touched{
+    border: 5px solid rgb(37, 158, 0);
+}
+
+.inputInvalidInfo{
+    color: rgb(175, 0, 0);
+    font-size: 20px;
+}
+
+.formHeader{
+    font-weight: bold;
+    color: rgb(124, 124, 124);
+    font-size: 40px;
+}
+
+.youHaveOrNot{
+    margin: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    color: rgb(124, 124, 124);
+}
+
+.youHaveOrNot:hover{
+    color: rgb(185, 185, 185);
+}
