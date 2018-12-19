@@ -120,3 +120,22 @@ ul{
     color: rgb(56, 55, 55);
     background: rgb(219, 218, 218);
 }
+
+.light-dark-input{
+    width: 100%;
+    color: rgb(167, 166, 166);
+    background: rgb(97, 94, 94);
+    font-size: 35px;
+    border: none;
+    border-radius: 5px;
+}
+
+.submitDisabled:disabled:hover{
+    background: rgb(73, 0, 0);
+    color: rgb(170, 169, 169);
+    border: 5px solid rgb(56, 56, 56);
+}
+
+input:focus{
+    outline: none;
+}

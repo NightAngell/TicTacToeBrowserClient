@@ -3,10 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { TokenWithExpiration } from './models/TokenWithExpiration';
 import { isNullOrUndefined } from 'util';
+import { Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
 
+    userLogged: Subject<{}> = new Subject();
     tokenNameInLocalStorage: string = "ticTacToeJWToken"
     constructor(private http: HttpClient) { }
 
@@ -18,6 +20,7 @@ export class AuthenticationService {
             const token = this._jsonTokenToTokenWithExpiration(jsonToken);
             if (token && token.token) {
                 localStorage.setItem(this.tokenNameInLocalStorage, JSON.stringify(jsonToken));
+                this.userLogged.next();
             }
 
             return token;
@@ -26,6 +29,7 @@ export class AuthenticationService {
 
     logout() {
         localStorage.removeItem(this.tokenNameInLocalStorage);
+        window.location.reload();
     }
 
     isUserAuthenticated(): boolean{
@@ -47,6 +51,13 @@ export class AuthenticationService {
             JSON.parse(localStorage.getItem(this.tokenNameInLocalStorage))
         );
     }
+
+    register(email: any, password: any): any {
+        return this.http.post(`http://localhost:62773/api/auth/register`, {
+            "email": email,
+            "password": password
+        });
+      }
 
     private _jsonTokenToTokenWithExpiration(tokenJsonObject: any): TokenWithExpiration{
         if(isNullOrUndefined(tokenJsonObject)) return null;

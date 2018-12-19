@@ -5,7 +5,7 @@ import { TicTacToeSingleplayerComponent } from './tic-tac-toe-singleplayer/tic-t
 import { LobbyComponent } from './multiplayer/lobby/lobby.component';
 import { GameComponent } from './multiplayer/game/game.component';
 import { AuthGuard } from './auth/auth.guard';
-import { LoginComponent } from './auth/login/login.component';
+import { LoginAndRegistrationComponent } from './auth/loginAndRegistration/loginAndRegistration.component';
 
 const routes: Routes = [
   {path: "", canActivate: [AuthGuard], children: [
@@ -14,7 +14,8 @@ const routes: Routes = [
     { path: "lobby", component: LobbyComponent},
     { path: "multiplayerGame", component: GameComponent },
   ]},
-  { path: "login", component: LoginComponent }
+  { path: "login", component: LoginAndRegistrationComponent, data: { isLogin: "1" } },
+  { path: "registration", component: LoginAndRegistrationComponent, data: { isLogin: "0" }}
 ];
 
 @NgModule({

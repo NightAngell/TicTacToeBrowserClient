@@ -13,9 +13,8 @@ import { GameComponent } from './multiplayer/game/game.component';
 import { WaitingForPlayerModalComponent } from './multiplayer/lobby/waiting-for-player-modal/waiting-for-player-modal.component';
 import { WaitingModalComponent } from './shared/components/waiting-modal/waiting-modal.component';
 import { InfoModalComponent } from './shared/components/info-modal/info-modal.component';
-import { LoginComponent } from './auth/login/login.component';
 import { JwtInterceptor } from './auth/JWT.interceptor';
-import { RegistrationComponent } from './auth/registration/registration.component';
+import { LoginAndRegistrationComponent } from './auth/loginAndRegistration/loginAndRegistration.component';
 
 @NgModule({
   declarations: [
@@ -28,8 +27,7 @@ import { RegistrationComponent } from './auth/registration/registration.componen
     WaitingForPlayerModalComponent,
     WaitingModalComponent,
     InfoModalComponent,
-    LoginComponent,
-    RegistrationComponent
+    LoginAndRegistrationComponent
   ],
   imports: [
     BrowserModule,
