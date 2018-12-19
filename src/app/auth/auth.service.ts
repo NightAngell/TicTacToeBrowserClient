@@ -10,6 +10,8 @@ export class AuthenticationService {
 
     userLogged: Subject<{}> = new Subject();
     tokenNameInLocalStorage: string = "ticTacToeJWToken"
+    refreshInterval: any;
+
     constructor(private http: HttpClient) { }
 
     login(email: string, password: string) {
@@ -21,6 +23,7 @@ export class AuthenticationService {
             if (token && token.token) {
                 localStorage.setItem(this.tokenNameInLocalStorage, JSON.stringify(jsonToken));
                 this.userLogged.next();
+                this._makeSureRefreshIntervalWork();
             }
 
             return token;
@@ -40,13 +43,15 @@ export class AuthenticationService {
             JSON.parse(jsonToken)
         )
 
-        if(token && token.token) 
+        if(token && token.token) {
+            this._makeSureRefreshIntervalWork();
             return true;
+        } 
         else
             return false;
     }
 
-    getTokenFromLocalStorage(): TokenWithExpiration{
+    getToken(): TokenWithExpiration{
         return this._jsonTokenToTokenWithExpiration(
             JSON.parse(localStorage.getItem(this.tokenNameInLocalStorage))
         );
@@ -57,7 +62,28 @@ export class AuthenticationService {
             "email": email,
             "password": password
         });
-      }
+    }
+
+    refreshToken(){
+        this.http.get("http://localhost:62773/api/auth/refresh")
+        .pipe(map((jsonToken: any) => {
+            const token = this._jsonTokenToTokenWithExpiration(jsonToken);
+            if (token && token.token) {
+                localStorage.setItem(this.tokenNameInLocalStorage, JSON.stringify(jsonToken));
+                this.userLogged.next();
+            }
+
+            return token;
+        })).subscribe();
+    }
+
+    private _makeSureRefreshIntervalWork(){
+        if(isNullOrUndefined(this.refreshInterval)) {
+            this.refreshInterval = setInterval(()=>{
+                this.refreshToken();
+            }, 60000*55);
+        }
+    }
 
     private _jsonTokenToTokenWithExpiration(tokenJsonObject: any): TokenWithExpiration{
         if(isNullOrUndefined(tokenJsonObject)) return null;

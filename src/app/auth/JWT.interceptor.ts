@@ -12,7 +12,7 @@ export class JwtInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         if(!request.url.includes("localhost:62773/api")) return next.handle(request);
        
-        let token = this.auth.getTokenFromLocalStorage();
+        let token = this.auth.getToken();
         if (token && token.token) {
             request = request.clone({
                 setHeaders: { 

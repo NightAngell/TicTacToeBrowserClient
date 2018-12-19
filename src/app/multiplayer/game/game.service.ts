@@ -40,7 +40,7 @@ export class GameService {
     this._connection = new signalR.HubConnectionBuilder()
     .withUrl("http://localhost:62773/gameHub", {
       transport: signalR.HttpTransportType.WebSockets,
-      accessTokenFactory: ()=> this._auth.getTokenFromLocalStorage().token
+      accessTokenFactory: ()=> this._auth.getToken().token
     })
     //.configureLogging(signalR.LogLevel.Trace)
     .build();
