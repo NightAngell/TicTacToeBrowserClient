@@ -23,7 +23,7 @@ export class AuthenticationService {
             if (token && token.token) {
                 localStorage.setItem(this.tokenNameInLocalStorage, JSON.stringify(jsonToken));
                 this.userLogged.next();
-                this._makeSureRefreshIntervalWork();
+                this.makeSureTokenNotExpireWhenUserUseApp(token);
             }
 
             return token;
@@ -43,8 +43,8 @@ export class AuthenticationService {
             JSON.parse(jsonToken)
         )
 
-        if(token && token.token) {
-            this._makeSureRefreshIntervalWork();
+        if(token && token.token && !this.tokenCloseToExpired(token, 2)) {
+            this.makeSureTokenNotExpireWhenUserUseApp(token);
             return true;
         } 
         else
@@ -77,11 +77,25 @@ export class AuthenticationService {
         })).subscribe();
     }
 
-    private _makeSureRefreshIntervalWork(){
+    tokenCloseToExpired(token: TokenWithExpiration, minutesToExpire: number): boolean {
+        const expirationDate = new Date(token.expiration);
+        const now = new Date();
+        const diffMs = expirationDate.getTime() - now.getTime();
+        if(diffMs <= 0) return true;
+
+        const diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
+        if(diffMins - minutesToExpire <= 0) return true;
+
+        return false;
+    }
+
+    makeSureTokenNotExpireWhenUserUseApp(token: TokenWithExpiration){
         if(isNullOrUndefined(this.refreshInterval)) {
             this.refreshInterval = setInterval(()=>{
-                this.refreshToken();
-            }, 60000*55);
+                if(this.tokenCloseToExpired(token, 5)){
+                    this.refreshToken();
+                }
+            }, 60000);
         }
     }
 
