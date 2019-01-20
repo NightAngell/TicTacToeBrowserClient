@@ -14,7 +14,7 @@
     email
     autocomplete="off"
   >
-  <div *ngIf="email.invalid && email.touched" class="inputInvalidInfo">
+  <div *ngIf="email.invalid && email.touched" class="inputInvalidInfo" emailInvalidInfo>
     Please, provide valid email.
   </div>
   <input 
@@ -26,12 +26,12 @@
     ngModel
     required
   >
-  <div *ngIf="password.invalid && password.touched" class="inputInvalidInfo">
+  <div *ngIf="password.invalid && password.touched" class="inputInvalidInfo" passwordInvalidInfo>
     Please, privide valid password. Password require at least 6 characters;
   </div>
   <div *ngIf="isLogin" routerLink="/registration" class="youHaveOrNot">You havn`t accout? Just create it!</div>
   <div *ngIf="!isLogin" routerLink="/login" class="youHaveOrNot">You have accout?</div>
   <div *ngIf="secondSameUserExist" class="inputInvalidInfo">User with that email exist!</div>
-  <div *ngIf="wrongLoginOrPassword" class="inputInvalidInfo">Wrong login or password!</div>
+  <div *ngIf="wrongLoginOrPassword" class="inputInvalidInfo" wrongLoginOrPasswordInfo>Wrong login or password!</div>
   <input type="submit" class="dark-btn submitDisabled" [disabled]="f.invalid">
 </form>
