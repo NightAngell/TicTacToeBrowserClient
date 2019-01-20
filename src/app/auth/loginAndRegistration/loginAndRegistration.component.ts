@@ -5,6 +5,7 @@ import { from } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { isNullOrUndefined } from 'util';
 import { HttpErrorResponse } from '@angular/common/http';
+import { WaitingModalService } from 'src/app/shared/components/waiting-modal/waiting-modal.service';
 
 @Component({
   selector: 'app-loginAndRegistration',
@@ -21,7 +22,8 @@ export class LoginAndRegistrationComponent implements OnInit {
   constructor(
     private authService: AuthenticationService, 
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private waitingModal: WaitingModalService
   ) { }
 
   ngOnInit() {
@@ -31,28 +33,42 @@ export class LoginAndRegistrationComponent implements OnInit {
   }
 
   onSubmit(form: NgForm){
+    this.waitingModal.Show();
+
     if(this.isLogin){
-      this.authService.login(form.value.email, form.value.password).subscribe(()=>{
-        this.router.navigateByUrl(`${this.prevPage}`);
-      }, (errorResponse: HttpErrorResponse)=>{
-        if(errorResponse.status === 401){
-          this.wrongLoginOrPassword = true;
-        }
-      });
+      this.handleOnSubmitToLogin(form);
     } else {
-      this.authService.register(form.value.email, form.value.password).subscribe(()=>{
-        this.router.navigateByUrl(`${this.prevPage}`);
-      }, (errorResponse: HttpErrorResponse)=>{
-        const errors: [] = errorResponse.error as [];
-        errors.forEach(error => {
-          const code: string = error['code'];
-          if(code === "DuplicateUserName") {
-            this.secondSameUserExist = true;
-          }
-        });
-      });
+      this.handleOnSubmitToRegistration(form);
     }
-   
   }
 
+  handleOnSubmitToLogin(form: NgForm){
+    this.authService.login(form.value.email, form.value.password).subscribe(()=>{
+      this.waitingModal.Hide();
+      this.router.navigateByUrl(`${this.prevPage}`);
+    }, 
+    (errorResponse: HttpErrorResponse)=>{
+      this.waitingModal.Hide();
+      if(errorResponse.status === 401){
+        this.wrongLoginOrPassword = true;
+      }
+    });
+  }
+
+  handleOnSubmitToRegistration(form: NgForm){
+    this.authService.register(form.value.email, form.value.password).subscribe(()=>{
+      this.waitingModal.Hide();
+      this.router.navigateByUrl(`${this.prevPage}`);
+    }, 
+    (errorResponse: HttpErrorResponse)=>{
+      this.waitingModal.Hide();
+      const errors: [] = errorResponse.error as [];
+      errors.forEach(error => {
+        const code: string = error['code'];
+        if(code === "DuplicateUserName") {
+          this.secondSameUserExist = true;
+        }
+      });
+    });
+  }
 }
