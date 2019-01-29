@@ -9,6 +9,20 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
+  <noscript>Sorry, your browser does not support JavaScript!</noscript>
+  <script>
+    function isIE() {
+      ua = navigator.userAgent;
+      /* MSIE used to detect old browsers and Trident used to newer ones*/
+      var is_ie = ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1;
+      
+      return is_ie; 
+    }
+
+    if(isIE()){
+      alert("This browser is not supported");
+    }
+  </script>
   <app-root></app-root>
 </body>
 </html>
