@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import { TokenWithExpiration } from './models/TokenWithExpiration';
 import { isNullOrUndefined } from 'util';
 import { Subject } from 'rxjs';
+import { ConfigurationService } from '../configuration.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -12,11 +13,11 @@ export class AuthenticationService {
     tokenNameInLocalStorage: string = "ticTacToeJWToken"
     refreshInterval: any;
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient,  private config: ConfigurationService) { }
 
     login(email: string, password: string) {
         return this.http.post<TokenWithExpiration>(
-            `http://localhost:62773/api/auth/`,
+            `${this.config.serverAddressBase}/api/auth/`,
             { email: email, password: password })
         .pipe(map((jsonToken: any) => {
             const token = this._jsonTokenToTokenWithExpiration(jsonToken);
@@ -58,14 +59,14 @@ export class AuthenticationService {
     }
 
     register(email: any, password: any): any {
-        return this.http.post(`http://localhost:62773/api/auth/register`, {
+        return this.http.post(`${this.config.serverAddressBase}/api/auth/register`, {
             "email": email,
             "password": password
         });
     }
 
     refreshToken(){
-        this.http.get("http://localhost:62773/api/auth/refresh")
+        this.http.get(`${this.config.serverAddressBase}/api/auth/refresh`)
         .pipe(map((jsonToken: any) => {
             const token = this._jsonTokenToTokenWithExpiration(jsonToken);
             if (token && token.token) {

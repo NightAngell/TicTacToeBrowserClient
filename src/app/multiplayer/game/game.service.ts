@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 import * as signalR from '@aspnet/signalr';
 import { PositionOnTheField } from './models/position-on-the-field';
 import { AuthenticationService } from 'src/app/auth/auth.service';
+import { ConfigurationService } from 'src/app/configuration.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class GameService {
   playerId: string;
   isHost: boolean;
   private _connection: signalR.HubConnection;
-  constructor(private _auth: AuthenticationService) {
+  constructor(private _auth: AuthenticationService, private _config: ConfigurationService) {
     this._createConnectionHub();
     this._attachEventsToConnection();
   }
@@ -38,7 +39,7 @@ export class GameService {
 
   private _createConnectionHub(){
     this._connection = new signalR.HubConnectionBuilder()
-    .withUrl("http://localhost:62773/gameHub", {
+    .withUrl(`${this._config.serverAddressBase}/gameHub`, {
       transport: signalR.HttpTransportType.WebSockets,
       accessTokenFactory: ()=> this._auth.getToken().token
     })

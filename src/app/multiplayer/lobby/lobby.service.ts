@@ -8,6 +8,7 @@ import { Room } from './models/room';
 import { HubConnectionState } from 'src/app/shared/enums/hub-connection-state.enum';
 import { GameService } from '../game/game.service';
 import { AuthenticationService } from 'src/app/auth/auth.service';
+import { ConfigurationService } from 'src/app/configuration.service';
 
 @Injectable({
   providedIn: 'root'
@@ -28,13 +29,14 @@ export class LobbyService {
   constructor(
     private _http: HttpClient, 
     private _gameService: GameService, 
-    private _auth: AuthenticationService) {
+    private _auth: AuthenticationService,
+    private _config: ConfigurationService) {
     this._createConnectionHub();
     this._attachEventsToConnectionHub();
   }
 
   getListOfRooms(): Observable<Room[]> {
-    return this._http.get("http://localhost:62773/api/room").pipe(map((roomsArray: [])=>{
+    return this._http.get(`${this._config.serverAddressBase}/api/room`).pipe(map((roomsArray: [])=>{
       console.log(roomsArray)
       const rooms: Room[] = [];
       roomsArray.forEach(roomJson => {
@@ -93,7 +95,7 @@ export class LobbyService {
 
   private _createConnectionHub(){
     this._connection = new signalR.HubConnectionBuilder()
-      .withUrl("http://localhost:62773/roomHub", {
+      .withUrl(`${this._config.serverAddressBase}/roomHub`, {
         transport: signalR.HttpTransportType.WebSockets,
         accessTokenFactory: ()=> this._auth.getToken().token
       })
